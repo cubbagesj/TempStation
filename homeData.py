@@ -3,15 +3,16 @@
 # in the house.  Each module is set to broadcast a UDP message
 # with its readings to 192.168.1.226:21567
 #
-# This script used to post to Adafruit IO but stopped for now
-# I was using Initial State but 
-# stopped because of limits on free streams
+# The readings are stored in the readings.db database.  The database
+# has a table for each esp unit
 #
 # Last update: 
-# sjc - 1/30/17
+# sjc - 3/16/17
 #
 
 import socket
+import time
+import sqlite3 as lite
 
 # open a socket to listen for data on
 # all modules send to the same port
@@ -21,8 +22,6 @@ listen_addr = ("", 21567)
 UDPSock.bind(listen_addr)
 
 
-shttempf = shthumidity = dhttempf = dhthumidity = 0.0
-sht2tempf = sht2humidity = Sitempf = Sihumidity = 0.0
 
 while True:
     data, addr = UDPSock.recvfrom(1024)
@@ -33,25 +32,28 @@ while True:
         message = data.strip().split(":")
         # Handle messages from each module individually
 
-        if message[0] == 'ESP1':
-            # ESP1 has a DHT22 and an SHT31D module
-            if message[1] == 'DHT':
-                shttempf = float(message[2]) * (9.0/5.0) + 32.0
-                shthumidity = float(message[3])
-            if message[4] == 'SHT':
-                dhttempf = float(message[5])
-                dhthumidity = float(message[6])
 
+        # Insert the values into database
+        #
+        # Start by creating the command string that the values will be put into
+        names = "INSERT INTO " + message[0] + " ( time, sensor, reading, unit"
+        names = names + ") VALUES (  ?, ?, ?, ?) "
 
-        if message[0] == 'ESP2':
-            # ESP2 has a DHT22 and an Si7021 module
-            if message[1] == 'DHT':
-                sht2tempf = float(message[2]) * (9.0/5.0) + 32.0
-                sht2humidity = float(message[3])
-            if message[4] == 'Si':
-                Sitempf = float(message[5]) * (9.0/5.0) + 32.0
-                Sihumidity = float(message[6])
+        # Now we need to loop for all of the readings.  Sensor readings come 
+        # in groups of three values.  Total number of sensors is:
+        #   ((len(message) - 1)//3) 
+        for cnt in range((len(message) - 1) // 3):
 
+            values = [time.strftime("%Y-%m-%d") +" "+ time.strftime("%H:%M:%S")]
+            values.append( message[1 + (cnt*3)])
+            values.append( message[2 + (cnt*3)])
+            values.append( message[3 + (cnt*3)])
+
+            # Now enter the readings in the database
+            con = lite.connect('readings.db')
+            with con:
+                cur = con.cursor()
+                cur.execute(names, values)
 
     except:
         pass

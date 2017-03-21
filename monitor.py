@@ -15,7 +15,9 @@ UDPSock.bind(listen_addr)
 
 while True:
     data, addr = UDPSock.recvfrom(1024)
+    message = data.strip().split(":")
 
     print(data)
+    print((len(message)-1) // 3)
 
     
