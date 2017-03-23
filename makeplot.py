@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Script to extract data from the readings database and make a plot
 import datetime
 import numpy as np
 import matplotlib
@@ -12,7 +13,7 @@ import matplotlib.dates as mdates
 import sqlite3 as lite
 import sys
 
-con = lite.connect('/home/pi/Sensorboard/sensordb')
+con = lite.connect('/home/pi/Documents/Python/TempStation/readings.db')
 
 
 hours = mdates.HourLocator(interval=4)
@@ -22,16 +23,16 @@ daysFmt = mdates.DateFormatter('%H:%M')
 
 with con:
 
-    # Get data from the past week
+    # Get data from the past two days
     delta = datetime.timedelta(2)
     past = datetime.datetime.now() - delta
 
-    symbol = past.strftime("%Y-%m-%d")
+    symbol = past.strftime("%Y-%m-%d %H:%M:%S")
 
     t = (symbol,)
 
     cur = con.cursor()
-    cur.execute('SELECT date,time, humidity from readings where date>?', t)
+    cur.execute('SELECT time, reading from ESP1 where sensor = 1002 and time>?', t)
      
     data = cur.fetchall()
 
@@ -39,17 +40,17 @@ with con:
     ydata = []
     
     for row in data:
-        xdata.append(datetime.datetime.strptime(row[0]+' '+row[1],"%Y-%m-%d %H:%M:%S"))
-        ydata.append(row[2]) 
+        xdata.append(datetime.datetime.strptime(row[0],"%Y-%m-%d %H:%M:%S"))
+        ydata.append(row[1]) 
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.plot(xdata, ydata)
     fig.autofmt_xdate()
  
-    ax.set_ylabel('Humdity (%)')
+    ax.set_ylabel('Temp  (C)')
     ax.set_xlabel('Time')
-    ax.set_title('Humidity - last 48 hrs')
+    ax.set_title('Temp - last 48 hrs')
    
     ax.xaxis.set_major_locator(hours)
     ax.xaxis.set_major_formatter(daysFmt)
@@ -58,6 +59,6 @@ with con:
  
 
     plt.grid('on')
-    plt.savefig('/home/pi/Sensorboard/static/humidity.png')
+    plt.savefig('/home/pi/Documents/Python/TempStation/humidity2.png')
 #    plt.show()
 

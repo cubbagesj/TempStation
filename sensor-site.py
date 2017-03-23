@@ -7,25 +7,25 @@ app = Flask(__name__)
 
 @app.route("/")
 def current():
-    con = lite.connect('sensordb')
+    con = lite.connect('readings.db')
     with con:
         con.row_factory = lite.Row
         cur = con.cursor()
-        cur.execute("SELECT * FROM readings WHERE ID = (SELECT MAX(ID) FROM readings)")
+        cur.execute("SELECT * FROM ESP1 WHERE ID = (SELECT MAX(ID) FROM ESP1)")
 
         row = cur.fetchone()
 
         templateData = {
-           'date': row["date"],
+           'date': row["time"],
            'time': row["time"],
-           'outside': row["Outside"],
-           'masterbr': row["MasterBR"],
-           'waterhtr': row["WaterHtr"],
-           'basement': row["Basement"],
-           'humidity': row["Humidity"],
-           'furn_out': row["Furn_Out"],
-           'furn_in' : row["Furn_In"],
-           'onboard' : row["Onboard"]
+           'outside': row["reading"],
+           'masterbr': row["reading"],
+           'waterhtr': row["reading"],
+           'basement': row["reading"],
+           'humidity': row["reading"],
+           'furn_out': row["reading"],
+           'furn_in' : row["reading"],
+           'onboard' : row["reading"]
            }
     
     return render_template('main.html', **templateData)
