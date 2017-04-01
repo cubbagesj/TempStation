@@ -96,7 +96,7 @@ class sensorDatabase:
             pass
 
 
-    def dbSelectSensorDays(self,sensorID, , days='2'):
+    def dbSelectSensorDays(self,sensorID, days='2'):
         """ Select readings from one sensor for a certain number of days
         Uses the sensor id
         to determine the table to pull from.   
