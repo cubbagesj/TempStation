@@ -48,6 +48,37 @@ class sensorDatabase:
                 # Stow the results
                 self.dbData = cur.fetchall()
 
+    def dbSensorName(self, sensorID):
+        """ Returns the descriptive name for the sensor
+        Eventually this will pull from another database
+        table but for now just use a dictionary
+        """
+        self.names = { 1001:"Bedroom DHT Temp",
+                       1002:"Bedrrom DHT RH",
+                       1003:"Bedroom SHT Temp",
+                       1004:"Bedroom SHT RH",
+                       2001:"Familyroom DHT Temp",
+                       2002:"Familyroom DHT RH",
+                       2003:"Familyroom Si Temp",
+                       2004:"Familyroom Si RH"}
+
+        return self.names[sensorID]
+
+    def dbGetLast(self, sensorID):
+        """ Returns the most recent value for the selected sensor
+        """
+
+        tableID = int(sensorID/1000)
+
+        query = 'SELECT * from ESP%d WHERE sensor= %d ' % (tableID, sensorID)
+
+        query = query + 'ORDER BY id DESC LIMIT 1'
+
+        self.dbQuery(query)
+
+        return self.dbData
+
+
     def dbSelectSensor(self,sensorID, start='', end=''):
         """ Select all of the readings from one sensor.  Uses the sensor id
         to determine the table to pull from.  Default is to return all of the 

@@ -29,28 +29,25 @@
    </head>
 
    <body>
-      <h1>Current Readings for {{ date }} {{ time }} </h1>
+      <h1>Current Readings for {{ date }}  </h1>
       <h2>Temperatures</h2>
-      <p>Outside : {{ outside }}</p>
-      Master Bedroom : {{ masterbr }} </p>
-      Basement : {{ basement }} </p>
-      Humidity : {{ humidity }}</p>
+      <p>Master Bedroom (F): {{ masterbrTemp }} </p>
+      MBR Humidity : {{ masterbrhumidity }}</p>
+      Family Room (C): {{ familyrmTemp }}</p>
+      FR Humidity : {{ familyrmhumidity}}</p>
 
-      <h2>Appliances</h2>
-      <p>Furnace: <br>In: {{ furn_in }} Out: {{ furn_out }}</p>
-          Water Heater: {{ waterhtr }}</p> 
       <h2> Graphs </h2>
       <figure>
-	 <img src="/static/Humidity.png" align=left width=509 height=382 BORDER=0>
-      </figure> 
-      <figure>
-         <img src="/static/MasterBR.png" align=left width=509 height=382 BORDER=0> 
+         <img src="/static/1003.png" align=left width=509 height=382 BORDER=0> 
       </figure>
       <figure>
-         <img src="/static/Basement.png" align=left width=509 height=382 BORDER=0> 
-      </figure>
+         <img src="/static/1004.png" align=left width=509 height=382 BORDER=0> 
+      </figure>    
       <figure>
-         <img src="/static/Outside.png" align=left width=509 height=382 BORDER=0> 
+         <img src="/static/2003.png" align=left width=509 height=382 BORDER=0> 
+      </figure>    
+      <figure>
+         <img src="/static/2004.png" align=left width=509 height=382 BORDER=0> 
       </figure>    
    </body>
 </html>

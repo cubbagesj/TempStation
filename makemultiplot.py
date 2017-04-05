@@ -24,28 +24,48 @@ daysFmt = mdates.DateFormatter('%H:%M')
 
  
 # List of sensors to plot
-plots = [1001, 1002, 1003, 1004, 2001, 2002, 2003, 2004]
+# grouping sensors results in an overplot
+plots = [(1001, 1003), (1002, 1004), (2001, 2003), (2002, 2004)]
 
 for plot in plots:
 
-    # Get the data from the past 2 days
-
-    db.dbSelectSensorDays(plot, days=2)
-    xdata = []
-    ydata = []
-     
-    for row in db.dbData:
-        xdata.append(datetime.datetime.strptime(row[0],"%Y-%m-%d %H:%M:%S"))
-        ydata.append(row[2]) 
-
+    # Create a blank figure
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.plot(xdata, ydata)
+    
+    for sensor in plot:
+
+
+        # Get the data from the past 2 days
+
+        db.dbSelectSensorDays(sensor, days=2)
+        xdata = []
+        ydata = []
+     
+        for row in db.dbData:
+            xdata.append(datetime.datetime.strptime(row[0],"%Y-%m-%d %H:%M:%S"))
+            ydata.append(row[2]) 
+
+
+        aydata = np.array(ydata, dtype=float) 
+        
+        # If we are plotting temp then convert to F
+        if row[3] == 'C':
+            aydata = aydata * 1.8 + 32.0
+
+        ax.plot(xdata, aydata)
+    
     fig.autofmt_xdate()
 
-    ax.set_ylabel(row[3])
+    if row[3] == 'C' or row[3] == 'F':
+        ax.set_ylabel('Temp (F)')
+
+    if row[3] == 'RH':
+        ax.set_ylabel('Relative Humidty (%)')
+
     ax.set_xlabel('Time')
-    ax.set_title(str(plot)+' - last 48 hrs')
+    title = db.dbSensorName(sensor)
+    ax.set_title(title+' - last 48 hrs')
    
     ax.xaxis.set_major_locator(hours)
     ax.xaxis.set_major_formatter(daysFmt)
@@ -54,6 +74,6 @@ for plot in plots:
  
 
     plt.grid('on')
-    plt.savefig('./static/'+str(plot)+'.png')
+    plt.savefig('/home/pi/Documents/Python/TempStation/static/'+str(sensor)+'.png')
 
 
