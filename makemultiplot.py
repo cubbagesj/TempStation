@@ -14,7 +14,7 @@ import sqlite3 as lite
 import sys
 
 # Create the data base object 
-db = sensorDatabase('/home/pi/Documents/Python/TempStation/readings.db')
+db = sensorDatabase('/home/pi/TempStation/readings.db')
 
 # Setup the date label formatting
 hours = mdates.HourLocator(interval=4)
@@ -74,6 +74,6 @@ for plot in plots:
  
 
     plt.grid('on')
-    plt.savefig('/home/pi/Documents/Python/TempStation/static/'+str(sensor)+'.png')
+    plt.savefig('/home/pi/TempStation/static/'+str(sensor)+'.png')
 
 
