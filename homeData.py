@@ -80,4 +80,8 @@ while True:
                 pass
         except socket.timeout:
             pass
+
+        # Now we wait until time to poll again
+        # Sleep time set to 5 min
+    time.sleep(300)
     
