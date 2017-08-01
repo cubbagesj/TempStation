@@ -30,11 +30,13 @@
 
    <body>
       <h1>Current Readings for {{ date }}  </h1>
-      <h2>Temperatures</h2>
-      <p>Master Bedroom (F): {{ masterbrTemp }} </p>
-      MBR Humidity : {{ masterbrhumidity }}</p>
-      Family Room (C): {{ familyrmTemp }}</p>
-      FR Humidity : {{ familyrmhumidity}}</p>
+      <h2>Rooms</h2>
+      <h3>Master Bedroom</h3>
+      <p>Temperature : {{ masterbrTemp }} F </p>
+      Humidity : {{ masterbrhumidity }} % </p>
+      <h3>Family Room</h3>
+      <p>Family Room : {{ familyrmTemp }} F</p >
+      <p>Humidity : {{ familyrmhumidity}}% </p>
 
       <h2> Graphs </h2>
       <figure>

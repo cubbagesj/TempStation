@@ -15,7 +15,7 @@ def current():
        'date': db.dbGetLast(1001)[0][0],
        'masterbrTemp': db.dbGetLast(1003)[0][2],
        'masterbrhumidity': db.dbGetLast(1004)[0][2],
-       'familyrmTemp': db.dbGetLast(2003)[0][2],
+       'familyrmTemp': (db.dbGetLast(2003)[0][2])*1.8+32,
        'familyrmhumidity': db.dbGetLast(2004)[0][2]
        }
     
