@@ -6,17 +6,31 @@
 # The readings are stored in the readings.db database.  The database
 # has a table for each esp unit
 #
+# Update to use pygame to drive LCD display
+#
 # Last update: 
-# sjc - 7/16/17
+# sjc - 7/31/17
 #
 
 import socket
 import time
 import sqlite3 as lite
+import os, pygame
+from sensorTools import sensorDatabase
 
 # open a socket to talk to the ESPs
 # all modules listen to the same port 10000
 UDPSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Set up the display 
+os.putenv('SDL_FBDEV','/dev/fb1')
+pygame.init()
+pygame.mouse.set_visible(False)
+lcd = pygame.display.set_mode((320,240))
+lcd.fill((0,0,0))
+pygame.display.update()
+
+font_big = pygame.font.Font(None, 30)
 
 # First need to get a list of available modules so we scan the network
 # for modules. We send the \xAA message and wait for a response
@@ -81,7 +95,20 @@ while True:
         except socket.timeout:
             pass
 
-        # Now we wait until time to poll again
-        # Sleep time set to 5 min
+    # Here we get the latest reading and put it on the display
+    db = sensorDatabase('readings.db')
+    reading = db.dbGetLast(1003)[0][2]
+    text_surface = font_big.render('Bedroom: %5.2f F'%reading, True, (255,255,255))
+    rect = text_surface.get_rect(center=(160,120))
+    lcd.blit(text_surface, rect)
+
+    reading = db.dbGetLast(1004)[0][2]
+    text_surface = font_big.render('Bedroom: %5.2f %'%reading, True, (255,255,255))
+    rect = text_surface.get_rect(center=(160,160))
+    lcd.blit(text_surface, rect)
+
+    pygame.display.update()
+    # Now we wait until time to poll again
+    # Sleep time set to 5 min
     time.sleep(300)
     
