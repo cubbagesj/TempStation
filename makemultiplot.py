@@ -22,7 +22,9 @@ minutes = mdates.MinuteLocator()
 
 daysFmt = mdates.DateFormatter('%H:%M')
 
- 
+# Sensor cal corrections
+cals = { 1001: 7.0, 1003: 9.4, 1002:-16.0, 1004:-10.3, 2001:5.75, 2002:2.0, 2003:7.55, 2004:-7.74}
+
 # List of sensors to plot
 # grouping sensors results in an overplot
 plots = [(1001, 1003), (1002, 1004), (2001, 2003), (2002, 2004)]
@@ -52,6 +54,9 @@ for plot in plots:
         # If we are plotting temp then convert to F
         if row[3] == 'C':
             aydata = aydata * 1.8 + 32.0
+
+        # apply corrections
+        aydata = aydata - cals[sensor]
 
         ax.plot(xdata, aydata)
     

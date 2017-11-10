@@ -13,10 +13,10 @@ def current():
 
     templateData = {
        'date': db.dbGetLast(1001)[0][0],
-       'masterbrTemp': db.dbGetLast(1003)[0][2],
-       'masterbrhumidity': db.dbGetLast(1004)[0][2],
-       'familyrmTemp': (db.dbGetLast(2003)[0][2])*1.8+32,
-       'familyrmhumidity': db.dbGetLast(2004)[0][2]
+       'masterbrTemp': db.dbGetLast(1003)[0][2]-7.5,
+       'masterbrhumidity': db.dbGetLast(1004)[0][2]+10.3,
+       'familyrmTemp': (db.dbGetLast(2003)[0][2])*1.8+32. -9.4,
+       'familyrmhumidity': db.dbGetLast(2004)[0][2]+7.74
        }
     
     return render_template('main.html', **templateData)
