@@ -57,6 +57,7 @@ class sensorDatabase:
                        1002:"Bedrrom DHT RH",
                        1003:"Bedroom SHT Temp",
                        1004:"Bedroom SHT RH",
+                       1005:"Outside DS Temp",
                        2001:"Familyroom DHT Temp",
                        2002:"Familyroom DHT RH",
                        2003:"Familyroom Si Temp",
