@@ -30,15 +30,37 @@
 
    <body>
       <h1>Current Readings for {{ date }}  </h1>
-      <h2>Rooms</h2>
-      <h3>Master Bedroom</h3>
-      <p>Temperature : {{ masterbrTemp }} F </p>
-      Humidity : {{ masterbrhumidity }} % </p>
-      <h3>Family Room</h3>
-      <p>Family Room : {{ familyrmTemp }} F</p >
-      <p>Humidity : {{ familyrmhumidity}}% </p>
-      <h3>Outside</h3>
-      <p>Outside : {{ outsideTemp }} F</p>
+      <table border = "1" cellpadding = "5" cellspacing = "5">
+          <tr>
+              <th>Room</th>
+              <th>Temperature</th>
+              <th>Humidity</th>
+          </tr>
+          <tr>
+              <th>Master Bedroom</th>
+              <td>{{ masterbrTemp }}</td>
+              <td>{{ masterbrhumidity }}</td>
+          </tr>
+          <tr>
+              <th>Family Room</th>
+              <td>{{ familyrmTemp }}</td >
+              <td>{{ familyrmhumidity}}</td>
+          </tr>
+          <tr>
+              <th>Outside</th>
+              <td>{{ outsideTemp }}</td>
+              <td></td>
+          </tr>
+          <tr>
+              <th>Garage</th>
+              <td>{{ garageTemp }}</td>
+              <td></td>
+          </tr>
+
+      </table>
+      <h3>Garage Doors</h3>
+      <p>Door 1 : {{ door1 }} </p>
+      <p>Door 2 : {{ door2 }} </p>
 
       <h2> Graphs </h2>
       <figure>

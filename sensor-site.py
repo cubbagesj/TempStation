@@ -9,6 +9,17 @@ app = Flask(__name__)
 @app.route("/")
 def current():
     db = sensorDatabase('readings.db')
+    door1status = db.dbGetLast(3002)[0][2]
+    if door1status == 0:
+        door1 = 'Closed'
+    else:
+        door1 = 'Open'
+
+    door2status = db.dbGetLast(3003)[0][2]
+    if door2status == 0:
+        door2 = 'Closed'
+    else:
+        door2 = 'Open'
 
 
     templateData = {
@@ -17,7 +28,10 @@ def current():
        'masterbrhumidity': db.dbGetLast(1004)[0][2]+10.3,
        'familyrmTemp': (db.dbGetLast(2003)[0][2])*1.8+32. -9.4,
        'familyrmhumidity': db.dbGetLast(2004)[0][2]+7.74,
-       'outsideTemp': db.dbGetLast(1005)[0][2] * 1.8 + 32.0
+       'outsideTemp': db.dbGetLast(1005)[0][2] * 1.8 + 32.0,
+       'garageTemp': db.dbGetLast(3001)[0][2] * 1.8 + 32.0,
+       'door1': door1,
+       'door2': door2 
        }
     
     return render_template('main.html', **templateData)
