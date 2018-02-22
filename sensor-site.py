@@ -21,7 +21,12 @@ def current():
     else:
         door2 = 'Open'
 
-
+    door3status = db.dbGetLast(4001)[0][2]
+    if door3status == 0:
+        door3 = 'Closed'
+    else:
+        door3 = 'Open'
+        
     templateData = {
        'date': db.dbGetLast(1001)[0][0],
        'masterbrTemp': db.dbGetLast(1003)[0][2]-7.5,
@@ -31,7 +36,8 @@ def current():
        'outsideTemp': db.dbGetLast(1005)[0][2] * 1.8 + 32.0,
        'garageTemp': db.dbGetLast(3001)[0][2] * 1.8 + 32.0,
        'door1': door1,
-       'door2': door2 
+       'door2': door2, 
+       'door3': door3 
        }
     
     return render_template('main.html', **templateData)
