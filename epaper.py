@@ -78,14 +78,17 @@ if __name__ == '__main__':
     looptime = 300
 
     while True:
-        door1status = db.dbGetLast(3002)[0][2]
-        door2status = db.dbGetLast(3003)[0][2]
-        door3status = db.dbGetLast(4001)[0][2]
+        try:
+            door1status = db.dbGetLast(3002)[0][2]
+            door2status = db.dbGetLast(3003)[0][2]
+            door3status = db.dbGetLast(4001)[0][2]
 
-        date = db.dbGetLast(1001)[0][0]
-        intemp = db.dbGetLast(2003)[0][2] * 1.8 + 32. -9.4
-        outtemp = db.dbGetLast(1005)[0][2] * 1.8 + 32.0
-
+            date = db.dbGetLast(1001)[0][0]
+            intemp = db.dbGetLast(2003)[0][2] * 1.8 + 32. -9.4
+            outtemp = db.dbGetLast(1005)[0][2] * 1.8 + 32.0
+        except:
+            pass
+        
         updateScreen(date, door1status, door2status, door3status, intemp, outtemp)
 
         # Now wait
