@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def current():
-    db = sensorDatabase('readings.db')
+    db = sensorDatabase('/home/pi/TempStation/readings.db')
     door1status = db.dbGetLast(3002)[0][2]
     if door1status == 0:
         door1 = 'Closed'

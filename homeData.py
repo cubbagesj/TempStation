@@ -39,11 +39,14 @@ for n in range(1,254):
         data, address = UDPSock.recvfrom(1024)
         print('Got %s from %s'% (data, address))
         moduleList.append((data, address[0]))
+        time.sleep(5)
     except socket.timeout:
         pass
 
 # Increase the socket timeout to wait for measurement
 UDPSock.settimeout(5)
+
+# Setup Adafruit IO
 
 # Now go into the main measuring loop
 while True:
@@ -78,7 +81,7 @@ while True:
                     values.append( message[3 + (cnt*3)])
 
                     # Now enter the readings in the database
-                    con = lite.connect('readings.db')
+                    con = lite.connect('/home/pi/TempStation/readings.db')
                     with con:
                         cur = con.cursor()
                         cur.execute(names, values)
